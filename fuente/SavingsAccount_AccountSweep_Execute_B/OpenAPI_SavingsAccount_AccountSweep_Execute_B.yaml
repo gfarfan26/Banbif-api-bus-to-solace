@@ -1,0 +1,159 @@
+openapi: 3.0.1
+info:
+  title: Savings Account - Account Sweep - Execute - BSS
+  description: This service domain orchestrates a consumer savings account. The typical range of services and fees covers payments from and scheduled and ad-hoc deposits to the account, standing orders, sweeps, and liens. Set up an account sweep
+  version: 1.0.0
+servers:
+- description: Dominio - Base Path
+  url: https://is11.ace.apps.ocphipdes.dombif.peru/v1.0/savings-account-b
+paths:
+  /savingsaccount/accountsweep/execute:
+    post:
+      tags: &29580070
+      - BQ - AccountSweep
+      summary: Ex BQ Trigger an account sweep transaction
+      description: Ex BQ Trigger an account sweep transaction
+      requestBody:
+        $ref: '#/components/requestBodies/ExecuteAccountSweepRequest'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecuteAccountSweepResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        429:
+          $ref: '#/components/responses/TooManyRequestsError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    HTTPError:
+      type: object
+      properties:
+        StatusCode:
+          type: string
+        Status:
+          type: string
+        Message:
+          type: string
+    ExecuteAccountSweepRequest:
+      type: object
+      properties:
+        SavingsAccountFacility:
+          type: object
+          properties:
+            ProductInstanceReference:
+              type: object
+            SavingsAccountNumber:
+              type: string
+            CustomerReference:
+              type: object
+            BankBranchOrLocationReference:
+              type: object
+            AccountType:
+              type: string
+            AccountCurrency:
+              type: string
+            TaxReference:
+              type: object
+            EntitlementOptionSetting:
+              type: string
+            RestrictionOptionSetting:
+              type: string
+            LinkedAccounts:
+              type: string
+            LinkType:
+              type: string
+            AccountDetails:
+              type: string
+            DateType:
+              type: string
+        AccountSweep:
+          type: object
+          properties:
+            AccountSweepType:
+              type: string
+            AccountSweepApplicationSchedule:
+              type: string
+            AccountSweepConfiguration:
+              type: string
+            TargetAccount:
+              type: string
+            SweepMandate:
+              type: string
+            SweepProcessingSchedule:
+              type: string
+    ExecuteAccountSweepResponse:
+      type: object
+      properties:
+        SavingsAccountFacility:
+          type: object
+          properties:
+            DateType:
+              type: string
+        AccountSweep:
+          type: object
+          properties:
+            AccountSweepDefinition:
+              type: string
+            AccountSweepApplicationSchedule:
+              type: string
+  requestBodies:
+    ExecuteAccountSweepRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ExecuteAccountSweepRequest'
+  responses:
+    HTTPError: &958483536
+      description: Bad Request
+      content: &1480893741
+        application/json: &449027523
+          schema: &1985462050
+            $ref: '#/components/schemas/HTTPError'
+    BadRequestError:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HTTPError'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HTTPError'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HTTPError'
+    NotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HTTPError'
+    TooManyRequestsError:
+      description: Too Many Requests
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HTTPError'
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HTTPError'
